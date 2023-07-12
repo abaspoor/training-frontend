@@ -1,0 +1,27 @@
+.App {
+  background-color: var(--bg-color);
+  min-height: 100vh;
+  color: white;
+}
+.header{
+  text-align: center;
+  width: 100%;
+  height: 15vh;
+  border-bottom: 2px solid var(--main-accent-color);
+}
+.header-img{
+  height: 15vh;
+}
+.general-content{
+  display: grid;
+  grid-template-columns: 15rem 1fr;
+}
+.sidebar{
+  padding: 1rem;
+  background-color: var(--bg-light-color);
+  height: calc(85vh);
+}
+.main{
+  padding: 1rem;
+  font-family: 'Roboto', sans-serif;
+}
