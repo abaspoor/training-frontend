@@ -11,17 +11,17 @@ function App() {
 
   return (
       <ThemeProvider theme={theme}>
-    <div className="App">
-        <Router>
-            <header>
-              <Header/>
-              <div className="general-content">
-                  <Sidebar/>
-                  <Main/>
-              </div>
-        </header>
-        </Router>
-    </div>
+            <div className="App">
+                <Router>
+                    <header>
+                        <Header/>
+                        <div className="general-content">
+                            <Sidebar/>
+                            <Main/>
+                        </div>
+                    </header>
+                </Router>
+            </div>
       </ThemeProvider>
   );
 }
