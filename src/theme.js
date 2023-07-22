@@ -6,6 +6,11 @@ const theme = createTheme({
     palette:{
         primary: amber,
         secondary: lightBlue
+    },
+    colors:{
+        bgColor:'#3e3e3e',
+        bgLightColor:'#888',
+		mainAccentColor:'#fecc01'
     }
 });
 
