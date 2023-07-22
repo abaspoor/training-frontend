@@ -1,13 +1,14 @@
 import React from 'react';
 import { Routes , Route } from 'react-router-dom';
 import GroupList from "./group-list";
+import GroupDetails from "./group-details";
 
 function Main(){
     return(
         <div className="main">
             <Routes >
-                <Route exact path="/" element={<GroupList/>}/>
-                <Route include path="/details" element={<h1>Details</h1>}/>
+                <Route exact path="/" Component={GroupList}/>
+                <Route path="/details/:id" Component={GroupDetails}/>
             </Routes >
         </div>
     );
