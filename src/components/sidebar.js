@@ -1,13 +1,23 @@
- import React from 'react';
+ import React, {useState} from 'react';
 import { Button } from '@mui/material';
+import { InputWithIcon } from './textfield';
+
+
 
 function Sidebar(){
+    const [UserName,PassWord, Element] = InputWithIcon();
+    const Handler = async e =>{
+        e.preventDefault();
+        console.log(UserName,PassWord);
+    }
     return(
         <div className="sidebar">
-            <h1>Sidebar</h1>
-            <Button color="primary" variant="contained">
-                My button
+			<form onSubmit={Handler}>
+                {Element}
+            <Button color="primary" variant="contained" type='submit'>
+                Submit
             </Button>
+            </form>
         </div>
     );
 }
