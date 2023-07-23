@@ -21,7 +21,7 @@ export  function InputWithIcon() {
             InputProps={{
                 startAdornment: (
                     <InputAdornment position="start">
-                        <AccountCircle/>
+                        <AccountCircle color="primary"/>
                     </InputAdornment>
                 ),
             }}
@@ -35,7 +35,7 @@ export  function InputWithIcon() {
             InputProps={{
                 startAdornment: (
                     <InputAdornment position="start">
-                        <PasswordIcon/>
+                        <PasswordIcon color="primary"/>
                     </InputAdornment>
                 ),
             }}
