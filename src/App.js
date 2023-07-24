@@ -16,13 +16,11 @@ function App() {
           <AuthProvider user={user}>
             <div className="App">
                 <Router>
-                    <header>
                         <Header/>
                         <div className="general-content">
                             <Sidebar/>
                             <Main/>
                         </div>
-                    </header>
                 </Router>
             </div>
           </AuthProvider>
