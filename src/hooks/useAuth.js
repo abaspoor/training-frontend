@@ -1,12 +1,10 @@
-import React from 'react';
 import {useContext, createContext, useState} from "react";
 
 const AuthContext = createContext(null);
 
-export const AuthProvider = ({user, children}) => {
+const AuthProvider = ({user, children}) => {
 
-    const [ authDAta, setAuthData ] = useState(user);
-
+    const [ AuthD, setAuthData ] = useState(user);
     const setAuth = newUser => {
         if(newUser){
             localStorage.setItem('bwf-user', JSON.stringify(newUser));
@@ -17,11 +15,13 @@ export const AuthProvider = ({user, children}) => {
     }
 
     return (
-        <AuthContext.Provider value={{authDAta, setAuth}}>
+        <AuthContext.Provider value={{AuthD, setAuth}}>
             {children}
         </AuthContext.Provider>
-    )
+    );
 }
 
 
-export const useAuth = () => useContext(AuthContext);
+const useAuth = () => useContext(AuthContext);
+
+export {AuthProvider,useAuth};
