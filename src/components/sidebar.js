@@ -8,6 +8,7 @@ import PasswordIcon from "@mui/icons-material/Password";
 import Box from "@mui/material/Box";
 import { auth } from '../services/user-services'
 import { useAuth } from '../hooks/useAuth';
+import {Link} from "react-router-dom";
 
  function Sidebar(){
      const [username, setUsername] = useState('');
@@ -24,6 +25,7 @@ import { useAuth } from '../hooks/useAuth';
     return(
         <div className="sidebar">
             {!AuthD ?
+            <div>
 			<form onSubmit={Handler}>
                 <Box sx={{'& > :not(style)': {m: 1}}}>
                     <TextField
@@ -57,7 +59,11 @@ import { useAuth } from '../hooks/useAuth';
             <Button color="primary" type="submit"	variant="contained" >
                 Submit
             </Button>
+                <br/>
+
             </form>
+                <Link to={'/register'}>Register Here if you dont have an account yet</Link>
+                </div>
             :<div>
             <p>{AuthD.user.username}</p>
                     <Button color="primary" onClick={() => logout()}	variant="contained" >
