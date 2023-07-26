@@ -14,4 +14,18 @@ const useStyles = makeStyles({
     },
 });
 
+const useStyles2 = makeStyles({
+    container:{
+        width:'100px',
+        display:'flex',
+        flexDirection:'column',
+        alignItems:'center',
+        position:'relative'
+    },
+    username:{
+        padding:'0',
+        margin: '0'
+    }
+});
 export const Hook = () => useStyles();
+export const StyleAvatar = () => useStyles2();
