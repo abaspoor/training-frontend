@@ -1,6 +1,6 @@
 import React, {useState} from "react";
-import { useAuth } from "../hooks/useAuth";
-import {Link} from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
+import {Link, useNavigate} from "react-router-dom";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -8,15 +8,15 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import PasswordIcon from "@mui/icons-material/Password";
 import EmailIcon from "@mui/icons-material/Email";
 import {Button} from "@mui/material";
-import { register } from '../services/user-services'
-import {auth} from "../services/user-services";
+import { register } from '../../services/user-services'
+import {auth} from "../../services/user-services";
 
 function Register(){
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('');
     const [email, setEmail] = useState('');
-
+	const history = useNavigate();
     const passMatch = () => {
         return (password === password2);
     }
@@ -27,7 +27,9 @@ function Register(){
         if(passMatch()){
 			const regData = await register({username, email, password, profile:{is_premium: false}})
             if(regData){
-                console.log(regData)
+                const data = await auth({username, password});
+                setAuth(data);
+                history('/account');
             }
         }else{
             console.log('password not match')

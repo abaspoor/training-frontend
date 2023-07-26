@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from '../assets/R.png'
+import logo from '../../assets/R.png'
 
 function Header(){
     return(

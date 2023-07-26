@@ -1,9 +1,10 @@
 import React from 'react';
 import { Routes , Route } from 'react-router-dom';
-import GroupList from "./group-list";
-import GroupDetails from "./group-details";
-import { useAuth } from "../hooks/useAuth";
-import Register from "./register";
+import GroupList from "../group/group-list";
+import GroupDetails from "../group/group-details";
+import { useAuth } from "../../hooks/useAuth";
+import Register from "../user/register";
+import Account from "../user/account";
 
 function Main(){
     const { AuthD } = useAuth();
@@ -14,6 +15,7 @@ function Main(){
                 <Route exact path="/" Component={GroupList}/>
                 <Route path="/details/:id" Component={GroupDetails}/>
                 <Route path="/register" Component={Register}/>
+                <Route path="/account" Component={Account}/>
             </Routes >
         </div>
     );
