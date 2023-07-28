@@ -10,11 +10,13 @@ import { auth } from '../../services/user-services'
 import { useAuth } from '../../hooks/useAuth';
 import {Link} from "react-router-dom";
 import User from "../user/user";
+import {useNavigate} from "react-router-dom";
 
- function Sidebar(){
+function Sidebar(){
      const [username, setUsername] = useState('');
      const [password, setPassword] = useState('');
      const { AuthD, setAuth } = useAuth();
+     const history = useNavigate();
     const Handler = async e => {
         e.preventDefault();
         const data = await auth({username, password});
@@ -22,6 +24,9 @@ import User from "../user/user";
     }
     const logout = () => {
         setAuth(null);
+    }
+    const account = () => {
+        history('/account');
     }
     return(
         <div className="sidebar">
@@ -69,6 +74,9 @@ import User from "../user/user";
                     <User user={AuthD.user}/>
                     <Button color="primary" onClick={() => logout()}	variant="contained" >
                         logout
+                    </Button>
+                    <Button color="primary" onClick={() => account()}	variant="contained" >
+                        My Account
                     </Button>
             </div>}
         </div>

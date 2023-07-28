@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Avatar} from "@mui/material";
 import {StyleAvatar} from "../react-classes";
+import PropTypes from "prop-types";
 
-function User({user}){
+export default function User({user}){
     const classes = StyleAvatar();
     return(
         <div className={classes.container}>
@@ -12,4 +13,11 @@ function User({user}){
     );
 }
 
-export default User;
+User.propTypes = {
+    user: PropTypes.shape({
+        username: PropTypes.string.isRequired,
+        profile: PropTypes.shape({
+            image: PropTypes.string
+        }).isRequired
+    }).isRequired
+}

@@ -1,5 +1,6 @@
 import React from 'react'
 import {useContext, createContext, useState} from "react";
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const AuthContext = createContext(null);
 
