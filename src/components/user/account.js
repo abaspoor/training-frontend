@@ -8,6 +8,7 @@ import {auth, register, uploadAvatar} from "../../services/user-services";
 import InputAdornment from "@mui/material/InputAdornment";
 import PasswordIcon from "@mui/icons-material/Password";
 import {changePass} from "../../services/user-services";
+import { useSnackbar } from 'notistack';
 
 function Account(){
     const { AuthD } = useAuth();
@@ -16,7 +17,7 @@ function Account(){
     const [NewPassword, SetNewPassword] = useState('');
     const [ConfirmPassword, SetConfirmPassword] = useState('');
     const hook=Hook();
-
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
     const passMatch = () => {
         return NewPassword === ConfirmPassword;
     }
@@ -31,14 +32,21 @@ function Account(){
 		e.preventDefault();
         if(passMatch()){
             console.log(NewPassword);
-            const regData = await changePass({old_password:OldPassword,new_password:NewPassword},AuthD.user.id);
-            // if(regData){
-            //     const data = await auth({username, password});
-            //     setAuth(data);
-            //     history('/account');
-            // }
+            const regData = await changePass({old_password:OldPassword,new_password:NewPassword},
+                AuthD.user.id,
+                AuthD.token);
+            if(regData.message === "Wrong old Password"){
+                enqueueSnackbar('Old password not right!', {variant:'error',anchorOrigin:{
+                        vertical:"top",
+                        horizontal:"right",
+                    }});
+            }
         }else{
-            console.log('password not match')
+            console.log('password not match');
+            enqueueSnackbar('password not Match!', {variant:'warning',anchorOrigin:{
+                vertical:"top",
+                    horizontal:"right",
+                }});
         }
     }
 

@@ -7,6 +7,7 @@ import { ThemeProvider} from "@mui/material/styles";
 import theme from "./theme";
 import { BrowserRouter as Router } from "react-router-dom";
 import { AuthProvider } from "./hooks/useAuth";
+import { SnackbarProvider, useSnackbar } from 'notistack';
 
 function App() {
   const user = JSON.parse(localStorage.getItem('bwf-user'));
@@ -14,6 +15,7 @@ function App() {
   return (
       <ThemeProvider theme={theme}>
           <AuthProvider user={user}>
+              <SnackbarProvider maxSnack={3}>
             <div className="App">
                 <Router>
                         <Header/>
@@ -23,6 +25,7 @@ function App() {
                         </div>
                 </Router>
             </div>
+              </SnackbarProvider>
           </AuthProvider>
       </ThemeProvider>
   );

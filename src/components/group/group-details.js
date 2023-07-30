@@ -5,6 +5,7 @@ import {DateTime} from 'luxon';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import { makeStyles} from "@mui/styles";
+import User from '../user/user';
 
 
 const useStyles = makeStyles(theme => ({
@@ -14,6 +15,10 @@ const useStyles = makeStyles(theme => ({
         marginLeft:'10px',
         marginTop:'10px',
         color: theme.colors.mainAccentColor
+    },
+    memberContainer:{
+        display: 'grid',
+        gridTemplateColumns: '100px auto',
     }
 }));
 
@@ -48,6 +53,14 @@ function GroupDetails() {
                             <p>{event.team1} vs {event.team2}</p>
                             <p><CalendarTodayIcon className={classes.dateTime}/> {evtTime.toSQLDate()}
                                   <AccessAlarmIcon className={classes.dateTime}/> {evtTime.toFormat('HH:mm')}</p>
+                        </div>
+                    })}
+                    <br/>
+                    <h3>Members:</h3>
+                    {group.members.map (member => {
+                        return <div key={member.id} className={classes.memberContainer}>
+                            <User user={member.user}/>
+                            <p>{member.points} <b> PTS</b></p>
                         </div>
                     })}
                 </React.Fragment>
