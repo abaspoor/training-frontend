@@ -1,15 +1,13 @@
 import React, {useState, useEffect} from "react";
 import { Link , useParams } from 'react-router-dom';
 import { useFetchGroup } from '../../hooks/fetch-groups';
-import {DateTime} from 'luxon';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import { makeStyles} from "@mui/styles";
 import User from '../user/user';
 import {Button} from "@mui/material";
 import {JoinGroup,LeaveGroup} from '../../services/group-services';
 import {useAuth} from "../../hooks/useAuth";
 import Comments from '../comments/comments';
+import EventList from "../event/event-list";
 
 
 const useStyles = makeStyles(theme => ({
@@ -68,19 +66,7 @@ function GroupDetails() {
                         :
                         <Button onClick={() => leaveHere()} variant='contained' color='primary'>leave Group</Button>
                     }
-
-
-                    <h3>Events:</h3>
-                    {group.events.map (event => {
-						const format = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-                        const evtTime = DateTime.fromFormat(event.time, format);
-
-                        return <div key={event.id}>
-                            <p>{event.team1} vs {event.team2}</p>
-                            <p><CalendarTodayIcon className={classes.dateTime}/> {evtTime.toSQLDate()}
-                                  <AccessAlarmIcon className={classes.dateTime}/> {evtTime.toFormat('HH:mm')}</p>
-                        </div>
-                    })}
+                    <EventList events={group.events} style={classes}/>
                     <br/>
                     <h3>Members:</h3>
                     {group.members.map (member => {
