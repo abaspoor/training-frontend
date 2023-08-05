@@ -2,12 +2,12 @@ import React from 'react';
 import User from "../user/user";
 
 
-function Comment({comment, user}){
+function Comment({comments, users}){
 
     return(
         <div>
-			<User user={user}/>
-            <p>{comment.description}</p>
+			<User user={users}/>
+            <p>{comments.description}</p>
         </div>
     )
 }

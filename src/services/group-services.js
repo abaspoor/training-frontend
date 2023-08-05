@@ -31,3 +31,16 @@ export function LeaveGroup(data){
     })
         .then(status).catch(e => {console.log(e)})
 }
+
+
+export function postComment(token,description,group,user){
+    return fetch(`http://127.0.0.1:8000/api/comments/`,{
+        method:'post',
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${token}`
+        },
+        body:JSON.stringify({description,group,user})
+    })
+        .then(status).catch(e => {console.log(e)})
+}
