@@ -8,6 +8,7 @@ import {JoinGroup,LeaveGroup} from '../../services/group-services';
 import {useAuth} from "../../hooks/useAuth";
 import Comments from '../comments/comments';
 import EventList from "../event/event-list";
+import {useNavigate} from "react-router-dom";
 
 
 const useStyles = makeStyles(theme => ({
@@ -25,6 +26,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function GroupDetails() {
+    const history = useNavigate();
     const classes = useStyles();
 	const {AuthD} = useAuth();
     const { id } = useParams();
@@ -54,6 +56,9 @@ function GroupDetails() {
         LeaveGroup({user: AuthD.user.id, group: group.id}).then(res => {console.log(res);});
         window.location.reload();
     }
+    const addEvent = () => {
+        history('/event-form/',{state:group});
+    }
     return (
         <div>
             <Link to={'/'}>Back</Link>
@@ -66,6 +71,7 @@ function GroupDetails() {
                         :
                         <Button onClick={() => leaveHere()} variant='contained' color='primary'>leave Group</Button>
                     }
+                    {isAdmin && <Button onClick={() => addEvent()} variant='contained' color='primary'>Add New Event</Button>}
                     <EventList events={group.events} style={classes}/>
                     <br/>
                     <h3>Members:</h3>

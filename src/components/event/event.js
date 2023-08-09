@@ -1,6 +1,6 @@
 import {makeStyles} from "@mui/styles";
 import React, {useEffect, useState} from 'react';
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {useFetchEvent} from "../../hooks/fetch-events";
 import {useAuth} from '../../hooks/useAuth';
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
@@ -10,6 +10,7 @@ import User from '../user/user';
 import TextField from "@mui/material/TextField";
 import {Button} from "@mui/material";
 import {placeBet} from "../../services/event-services";
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
     dateTime:{
@@ -30,6 +31,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 export default function Event(){
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
     const {AuthD} = useAuth();
     const {id} = useParams();
     const [data,loading,error] = useFetchEvent(AuthD.token,id);
@@ -46,19 +48,35 @@ export default function Event(){
             setEvtTime(DateTime.fromFormat(data.time, format));
         }
     }, [data]);
+    const sendBet = async () => {
+
+
+        const bet = await placeBet(AuthD.token, {score1, score2, 'event': Event.id});
+        if(bet){
+            if(bet.new){
+                Event.bets.push(bet.result);
+            }else{
+                const myBetIndex = Event.bets.findIndex(el => el.user.id === bet.result.user.id);
+                Event.bets[myBetIndex] = bet.result;
+            }
+            enqueueSnackbar(bet.message, {variant:'success',style:{borderRadius:'17px',},anchorOrigin:{
+                    vertical:"top",
+                    horizontal:"right",
+                }});
+            setScore1('');
+            setScore2('');
+        }
+    }
     if(error) return <h1>Error</h1>
     if(loading) return <h1>Loading....</h1>
-
-
-    const sendBet = async () => {
-        const bet = await placeBet(AuthD.token, {score1, score2, 'event': Event.id});
-    }
 
     return(
 
         <React.Fragment>
+
             {Event && evtTime &&
                 <div>
+                    <Link to={`/details/${Event.group}`}>Back</Link>
                 <h3>{Event.team1} vs {Event.team2}</h3>
                     {Event.score1>=0 && Event.score2>=0 && <h2>{Event.score1} : {Event.score2}</h2>}
                 <h2>
