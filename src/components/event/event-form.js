@@ -6,6 +6,10 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import dayjs from "dayjs";
+import {createEvent} from '../../services/event-services';
+import {useAuth} from "../../hooks/useAuth";
+import {enqueueSnackbar} from "notistack";
+import {useNavigate} from "react-router-dom";
 
 
 export default function EventForm(){
@@ -16,19 +20,34 @@ export default function EventForm(){
     dayjs.extend(utc)
     dayjs.extend(timezone)
 
-    const timestamp = "2014-06-01 12:00"
-    const tz = "Asia/Tehran"
+    const tz = "Asia/Tehran";
     ////////////////////////////
     const location=useLocation();
-    const group = location.state
+    const group = location.state;
+    const history = useNavigate();
+    const {AuthD} = useAuth();
     const [team1,setTeam1] = useState();
     const [team2,setTeam2] = useState();
-    const [time,setTime] = useState();
+    const [time,setTime] = useState(dayjs());
 	const adapter = AdapterDayjs;
     const handleSubmit = async e =>{
         e.preventDefault();
-        const dateTime = dayjs(time,'YYYY-MM-DD HH:mm:ss');
-        console.log(dateTime.tz(tz).format());
+        const dateTime = dayjs(time,"yyyy-MM-dd'T'HH:mm:ss'Z'");
+        const utcTime= dateTime.tz(tz,true).format();
+        const dataToSend = {team1, team2, 'time':utcTime, 'group':group.id};
+        const eventData = await createEvent(AuthD.token,dataToSend);
+        if(eventData){
+            enqueueSnackbar('Event Created!!!', {variant:'success',anchorOrigin:{
+                    vertical:"top",
+                    horizontal:"right",
+                }});
+            history('/details/'+group.id);
+        }else{
+            enqueueSnackbar('Error in Creating Event', {variant:'error',anchorOrigin:{
+                    vertical:"top",
+                    horizontal:"right",
+                }});
+        }
     }
 
     return(

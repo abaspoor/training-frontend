@@ -7,7 +7,7 @@ import {useNavigate} from "react-router-dom";
 
 export default function EventList({events , style}){
 
-    const history = useNavigate()
+    const history = useNavigate();
     const openEvent = eventId => {
         history(`/event/${eventId}`);
     }
@@ -18,7 +18,6 @@ export default function EventList({events , style}){
             {events && events.map (event => {
                 const format = "yyyy-MM-dd'T'HH:mm:ss'Z'";
                 const evtTime = DateTime.fromFormat(event.time, format);
-
                 return <div key={event.id} onClick={() => openEvent(event.id)}>
                     <p>{event.team1} vs {event.team2}
                     :
