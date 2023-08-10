@@ -21,7 +21,8 @@ const useStyles = makeStyles(theme => ({
     },
     memberContainer:{
         display: 'grid',
-        gridTemplateColumns: '100px auto',
+        gridTemplateColumns: 'auto 5fr 1fr',
+        alignItems:'center'
     }
 }));
 
@@ -78,6 +79,7 @@ function GroupDetails() {
                     {group.members.map (member => {
                         return <div key={member.id} className={classes.memberContainer}>
                             <User user={member.user}/>
+                            <p></p>
                             <p>{member.points} <b> PTS</b></p>
                         </div>
                     })}

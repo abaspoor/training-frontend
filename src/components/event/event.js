@@ -9,7 +9,7 @@ import {DateTime} from "luxon";
 import User from '../user/user';
 import TextField from "@mui/material/TextField";
 import {Button} from "@mui/material";
-import {placeBet} from "../../services/event-services";
+import {placeBet, setResults} from "../../services/event-services";
 import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
@@ -40,17 +40,21 @@ export default function Event(){
     const [ evtTime, setEvtTime] = useState(null);
     const [score1, setScore1] = useState(null);
     const [score2, setScore2] = useState(null);
+    const [isFuture,setIsFuture]=useState(null);
+    const [timeDiff,setTimeDiff]=useState(null);
 
     useEffect(()=>{
         setEvent(data);
         if(data?.time){
             const format = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-            setEvtTime(DateTime.fromFormat(data.time, format));
+            const eventTime = DateTime.fromFormat(data.time, format)
+            setEvtTime(eventTime);
+            const now = DateTime.now();
+            setIsFuture(eventTime>now);
+            setTimeDiff(eventTime.toRelative());
         }
     }, [data]);
     const sendBet = async () => {
-
-
         const bet = await placeBet(AuthD.token, {score1, score2, 'event': Event.id});
         if(bet){
             if(bet.new){
@@ -65,8 +69,26 @@ export default function Event(){
                 }});
             setScore1('');
             setScore2('');
+        }}
+    const setScores = async () => {
+        const eventData = await setResults(AuthD.token, {score1, score2, 'event': Event.id});
+        if(eventData){
+            enqueueSnackbar('Scores has been set', {variant:'success',style:{borderRadius:'17px',},anchorOrigin:{
+                        vertical:"top",
+                        horizontal:"right",
+                    }});
+            setEvent(eventData);
+            setScore1('');
+            setScore2('');
+            }
+        else {
+            enqueueSnackbar('Could not be set', {variant:'error',style:{borderRadius:'17px',},anchorOrigin:{
+                    vertical:"top",
+                    horizontal:"right",
+                }});
         }
-    }
+        }
+
     if(error) return <h1>Error</h1>
     if(loading) return <h1>Loading....</h1>
 
@@ -82,20 +104,36 @@ export default function Event(){
                 <h2>
                 <CalendarTodayIcon className={classes.dateTime}/> {evtTime.toSQLDate()}
                 <AccessAlarmIcon className={classes.dateTime}/> {evtTime.toFormat('HH:mm')}</h2>
+                    <h2>{timeDiff}</h2>
                     <hr/>
                     <br/>
                     {Event && Event.bets && Event.bets.map(bet => {
                     return <div key={bet.id} className={classes.bets}><User user={bet.user}/>
                         <h4>{bet.score1} : {bet.score2}</h4>
-                    <h4>PTS</h4></div>
+                    <h4>{bet.points}PTS</h4></div>
                     })}
                     <hr/>
                     <br/>
-                    <TextField label="Score 1" type='number' onChange={e=>setScore1(e.target.value)}></TextField>
-                     :
-                    <TextField label="Score 2" type='number' onChange={e=>setScore2(e.target.value)}></TextField>
+
                     <br/>
-                    <Button variant='contained' color='primary' onClick={() => sendBet()} disabled={!score1 || !score2}>Place Bet</Button>
+                    {isFuture ?
+                        <div>
+                            <TextField label="Score 1" type='number' onChange={e=>setScore1(e.target.value)}></TextField>
+                            :
+                            <TextField label="Score 2" type='number' onChange={e=>setScore2(e.target.value)}></TextField>
+                        <Button variant='contained' color='primary' onClick={() => sendBet()} disabled={!score1 || !score2}>Place Bet</Button>
+                    </div>
+                    :
+                        Event.is_admin ?
+                            <div><TextField label="Score 1" type='number' onChange={e=>setScore1(e.target.value)}></TextField>
+                            :
+                            <TextField label="Score 2" type='number' onChange={e=>setScore2(e.target.value)}></TextField>
+                                <br/>
+                        <Button variant='contained' color='primary' onClick={() => setScores()} disabled={!score1 || !score2}>Set Score</Button>
+                            </div>
+                            :
+                            null
+                    }
 
                 </div>
             }
