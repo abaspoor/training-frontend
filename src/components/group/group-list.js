@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { Link } from 'react-router-dom';
 import {useFetchGroups} from "../../hooks/fetch-groups";
+import GroupListItem from "./group-list-item";
 
 function GroupList() {
 
@@ -16,9 +17,7 @@ function GroupList() {
         <div>
                 { groups && groups.map(group => {
                     return (
-                        <Link key={group.id} to={`/details/${group.id}`}>
-                            <p>"{group.name}" from location : {group.location}</p>
-                        </Link>)
+                        <GroupListItem group={group}/>)
                 })}
         </div>
     );

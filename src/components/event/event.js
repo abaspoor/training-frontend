@@ -105,6 +105,7 @@ export default function Event(){
                 <CalendarTodayIcon className={classes.dateTime}/> {evtTime.toSQLDate()}
                 <AccessAlarmIcon className={classes.dateTime}/> {evtTime.toFormat('HH:mm')}</h2>
                     <h2>{timeDiff}</h2>
+                    <h3>Number of people already bet: {Event.number_bets}</h3>
                     <hr/>
                     <br/>
                     {Event && Event.bets && Event.bets.map(bet => {

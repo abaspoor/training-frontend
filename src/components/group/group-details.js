@@ -9,6 +9,7 @@ import {useAuth} from "../../hooks/useAuth";
 import Comments from '../comments/comments';
 import EventList from "../event/event-list";
 import {useNavigate} from "react-router-dom";
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 
 
 const useStyles = makeStyles(theme => ({
@@ -23,6 +24,15 @@ const useStyles = makeStyles(theme => ({
         display: 'grid',
         gridTemplateColumns: 'auto 5fr 1fr',
         alignItems:'center'
+    },
+    gold:{
+        color:'gold',
+    },
+    silver:{
+        color:'silver',
+    },
+    bronze:{
+        color:'bronze',
     }
 }));
 
@@ -38,6 +48,23 @@ function GroupDetails() {
 
     useEffect(()=>{
         if(data?.members){
+
+            data.members.sort((a,b)=> b.points - a.points);
+            const availableTrophies = ['gold','silver','bronze'];
+            let currentTrophy = 0;
+            data.members.map((m,index)=>{
+                if(index===0){m.trophy = availableTrophies[currentTrophy];}
+                else {
+                    if(m.points !== data.members[index-1].points){
+                        currentTrophy++;
+                    }
+                    if(currentTrophy < availableTrophies.length){
+                        m.trophy = availableTrophies[currentTrophy];
+                    }
+                }
+            })
+
+
             if(AuthD?.user){
                 setInGroup(!!data.members.find(memeber => memeber.user.id === AuthD.user.id));
                 setIsAdmin(data.members.find(memeber => memeber.user.id === AuthD.user.id)?.admin);
@@ -79,7 +106,7 @@ function GroupDetails() {
                     {group.members.map (member => {
                         return <div key={member.id} className={classes.memberContainer}>
                             <User user={member.user}/>
-                            <p></p>
+                            <p><EmojiEventsIcon className={`${classes[member.trophy]}`}/>{member.trophy}</p>
                             <p>{member.points} <b> PTS</b></p>
                         </div>
                     })}
